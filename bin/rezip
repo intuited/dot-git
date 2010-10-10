@@ -1,0 +1,100 @@
+#! /bin/bash
+# Acquired from http://kerneltrap.org/mailarchive/git/2008/9/15/3305014
+#   with some noted changes.
+#
+# (c) 2008 Sergio Callegari
+#
+# Rewrites a zip archive, possibly changing the compression level
+
+USAGE='Usage: rezip [options] [file]
+with options:
+  [-h | --help]            Gives help
+  [-p ?]                   Lists known profiles
+  [--unzip_opts options]   Pass options to unzip helper to read zip file
+  [--zip_opts options]     Pass options to zip helper to write zip file
+  [-p | --profile profile] Get options for helpers from profile
+
+Rewrites a zip archive, possibily changing the compression level.
+If the archive name is unspecified, then the command operates like a filter,
+reading from standard input and writing to standard output.
+Options can be manually provided to the unzip process doing the read and to
+the zip process doing the write. Alternatively a profile can be used to set
+options automatically.'
+
+PROFILES="ODF_UNCOMPRESS ODF_COMPRESS"
+
+## Original version
+#PROFILE_UNZIP_ODF_UNCOMPRESS='-b -qq -X'
+#PROFILE_ZIP_ODF_UNCOMPRESS='-q -r -D -0'
+#PROFILE_UNZIP_ODF_COMPRESS='-b -qq -X'
+#PROFILE_ZIP_ODF_COMPRESS='-q -r -D -6'
+
+# Patched as per http://permalink.gmane.org/gmane.comp.version-control.git/103077
+PROFILE_UNZIP_ODF_UNCOMPRESS='-b -qq'
+PROFILE_ZIP_ODF_UNCOMPRESS='-q -r -D -0 -X'
+PROFILE_UNZIP_ODF_COMPRESS='-b -qq'
+PROFILE_ZIP_ODF_COMPRESS='-q -r -D -6 -X'
+
+# End of patched section
+
+
+die()
+{
+    echo "$1" >&$2
+    exit $3
+}
+
+UNZIP_OPTS=""
+ZIP_OPTS=""
+
+while true ; do
+    case "$1" in
+        -h | --help)
+            die "$USAGE" 1 0 ;;
+        -p | --profile)
+            if [ "$2" = "?" ] ; then
+                die "Avalilable profiles: ${PROFILES}" 1 0 ;
+            else
+                profile=$2
+                shift
+                profile_unzip=PROFILE_UNZIP_${profile}
+                profile_zip=PROFILE_ZIP_${profile}
+                UNZIP_OPTS=${!profile_unzip}
+                ZIP_OPTS=${!profile_zip}
+            fi ;;
+        --unzip_opts)
+            UNZIP_OPTS=${UNZIP_OPTS} $2
+            shift ;;
+        --zip_opts)
+            ZIP_OPTS=${ZIP_OPTS} $2
+            shift ;;
+        -*)
+            die "$USAGE" 2 1 ;;
+        *)
+            break ;;
+    esac
+    shift
+done
+
+if [ $# = 0 ] ; then
+    tmpcopy=$(mktemp rezip.zip.XXXXXX)
+    cat > $tmpcopy
+    filename="$tmpcopy"
+else
+    tmpcopy=""
+    filename="$1"
+fi
+
+workdir=$(mktemp -d -t rezip.workdir.XXXXXX)
+curdir=$(pwd)
+
+cd $workdir
+unzip $UNZIP_OPTS "$curdir/$filename"
+zip $ZIP_OPTS "$curdir/$filename" .
+cd $curdir
+rm -fr $workdir
+if [ ! -z "$tmpcopy" ] ; then
+  cat $filename
+  rm $tmpcopy
+fi
+

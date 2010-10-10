@@ -3,3 +3,6 @@
 	filemode = true
 	bare = false
 	logallrefupdates = true
+[filter "opendocument"]
+	clean = ".git/bin/rezip -p ODF_UNCOMPRESS"
+	smudge = ".git/bin/rezip -p ODF_COMPRESS"
