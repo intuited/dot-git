@@ -1,0 +1,11 @@
+/branches/
+/objects/
+/refs/
+COMMIT_EDITMSG
+FETCH_HEAD
+HEAD
+ORIG_HEAD
+RENAMED-REF
+/logs/
+packed-refs
+index
