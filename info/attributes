@@ -1,3 +1,4 @@
 *.odt filter=opendocument
 *.ods filter=opendocument
 *.odp filter=opendocument
+*.odb filter=opendocument
