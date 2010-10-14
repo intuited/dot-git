@@ -1,9 +1,5 @@
 This branch of the dot-git repository provides functionality for
 compression and decompression of OpenOffice.org files.
 
-To activate its transparent smudge/clean filters,
-add lines like the following to the working tree's `.gitattributes` file:
-
-    *.odt filter=opendocument
-    *.ods filter=opendocument
-    *.odp filter=opendocument
+The file info/attributes enables smudge/clean filters
+for OpenDocument text, spreadsheet, and presentation file types.
