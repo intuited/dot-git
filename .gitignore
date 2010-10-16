@@ -9,3 +9,4 @@ RENAMED-REF
 /logs/
 packed-refs
 index
+/info/refs
