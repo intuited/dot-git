@@ -1,4 +1,4 @@
-*.odt filter=opendocument
-*.ods filter=opendocument
-*.odp filter=opendocument
-*.odb filter=opendocument
+*.odt filter=opendocument diff=odfit
+*.ods filter=opendocument diff=odfit
+*.odp filter=opendocument diff=odfit
+*.odb filter=opendocument diff=odfit

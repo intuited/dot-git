@@ -1,5 +1,22 @@
 This branch of the dot-git repository provides functionality for
-compression and decompression of OpenOffice.org files.
+compression and decompression of OpenOffice.org files
+and also for diffing arbitrary OpenDocument Format files
+using the Python script `odfit`_.
 
 The file info/attributes enables smudge/clean filters
 for OpenDocument text, spreadsheet, and presentation file types.
+It also enables diffing of all ODF files using ``odfit``.
+
+``odfit`` is kind of slow, relatively, so expect delays when doing diffs.
+
+Note that ``odfit`` is included as a git submodule.
+This means that if you didn't pass the ``--recursive`` option to ``git clone``,
+you will have to run ``git submodule update --init``
+to initialize the ``odfit`` sub-repository.
+
+``odfit`` requires Python in order to work.
+It's only been tested with Python 2.6.
+However, since recent (>= 3.1) version of OpenOffice
+include or require Python 2.6, this shouldn't be a problem.
+
+.. _odfit: http://github.com/intuited/odfit

@@ -6,3 +6,5 @@
 [filter "opendocument"]
 	clean = ".git/bin/rezip -p ODF_UNCOMPRESS"
 	smudge = ".git/bin/rezip -p ODF_COMPRESS"
+[diff "odfit"]
+	textconv=.git/bin/odfit -D
