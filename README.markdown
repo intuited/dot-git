@@ -1,6 +1,8 @@
 dot-git
 =======
 
+## "Repos all the way down"
+
 A repository of git repository contents.
 
 The idea is to create a git repository
